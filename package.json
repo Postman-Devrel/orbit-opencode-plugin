@@ -1,0 +1,72 @@
+{
+  "name": "@postman/opencode-orbit",
+  "version": "1.0.0",
+  "description": "Postman Orbit for OpenCode: turn any task into the right API calls. Registers Orbit's MCP server and an /orbit-discover command.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "assets",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build",
+    "render": "node scripts/render-discover.mjs",
+    "test": "node --test test/*.test.ts"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "mcp",
+    "model-context-protocol",
+    "api-discovery",
+    "api-integration",
+    "developer-tools",
+    "agent",
+    "llm",
+    "search",
+    "postman",
+    "orbit"
+  ],
+  "author": {
+    "name": "Postman DevRel",
+    "url": "https://github.com/Postman-Devrel"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Postman-Devrel/orbit-opencode-plugin.git"
+  },
+  "homepage": "https://github.com/Postman-Devrel/orbit-opencode-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/Postman-Devrel/orbit-opencode-plugin/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.0.0"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.19.4",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}
