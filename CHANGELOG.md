@@ -10,6 +10,12 @@ section into a dated, versioned entry when cutting a release; see [RELEASING.md]
 
 ## [Unreleased]
 
+### Changed
+
+- Installable from GitHub without npm (`opencode plugin github:Postman-Devrel/orbit-opencode-plugin`): the
+  `build` script is renamed `build:dist` and `dist/` is committed, to avoid OpenCode's
+  `git dep preparation failed` (anomalyco/opencode#49704).
+
 ## [1.0.0] - 2026-10-26
 
 ### Added

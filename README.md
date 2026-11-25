@@ -100,7 +100,7 @@ fails if the two drift apart.
 
 ```bash
 npm ci
-npm run build       # tsc -> dist/
+npm run build:dist  # tsc -> dist/ (commit the result)
 npm run typecheck
 npm test            # node:test, needs Node 24+ (runs the TypeScript tests directly)
 ```
