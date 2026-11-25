@@ -91,3 +91,12 @@ test("skill uses OpenCode tool names and clientName", () => {
   assert.ok(text.includes('"opencode/orbit-plugin"'));
   assert.ok(!text.includes("mcp__plugin_orbit") && !text.includes("allowed-tools"));
 });
+
+test("package.json has no script that breaks OpenCode git installs", () => {
+  // anomalyco/opencode#49704: these make `opencode plugin <git spec>` fail with "git dep preparation failed".
+  const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+  for (const name of ["build", "prepare", "prepack", "preinstall", "install", "postinstall"]) {
+    assert.equal(pkg.scripts?.[name], undefined, `scripts.${name} breaks git installs`);
+  }
+  assert.equal(pkg.workspaces, undefined);
+});

@@ -22,11 +22,11 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build:dist",
     "render": "node scripts/render-discover.mjs",
-    "test": "node --test test/*.test.ts"
+    "test": "node --test test/*.test.ts",
+    "build:dist": "tsc -p tsconfig.build.json"
   },
   "keywords": [
     "opencode",

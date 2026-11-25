@@ -23,6 +23,15 @@ bump `package.json` yourself. If you edit `skills/discover/SKILL.md`, run `npm r
 `src/discover.ts`. The `PR Check` workflow fails on a missing changelog entry, a stale `src/discover.ts`,
 type errors or failing tests.
 
+## Why `dist/` is committed and there is no `build` script
+
+OpenCode installs git packages (`opencode plugin github:Postman-Devrel/orbit-opencode-plugin`) with its bundled
+npm, which fails with `git dep preparation failed` when `package.json` declares `build`, `prepare`, `prepack`,
+`preinstall`, `install` or `postinstall`, or `workspaces`
+([anomalyco/opencode#49704](https://github.com/anomalyco/opencode/issues/49704)). So the compile step is named
+`build:dist`, nothing builds on install, and the compiled `dist/` is committed. `PR Check` fails if it is stale.
+A test fails if one of the forbidden script names comes back.
+
 ## Cutting a release
 
 You need npm publish rights on the `@postman` scope and push rights on the repo.
@@ -32,7 +41,7 @@ You need npm publish rights on the `@postman` scope and push rights on the repo.
 3. In `CHANGELOG.md`, rename `## [Unreleased]` to `## [X.Y.Z] - <date>` and add a fresh empty `## [Unreleased]` above it.
 4. Verify from a clean tree:
    ```bash
-   npm ci && npm run build && npm run typecheck && npm test
+   npm ci && npm run build:dist && npm run typecheck && npm test
    npm pack --dry-run        # check the file list: dist, skills, assets, README, CHANGELOG, LICENSE
    ```
 5. Commit `chore(release): X.Y.Z`, tag it, and push both:
@@ -41,7 +50,7 @@ You need npm publish rights on the `@postman` scope and push rights on the repo.
    git tag -a X.Y.Z -m "X.Y.Z"
    git push origin main X.Y.Z
    ```
-6. Publish to npm: `npm publish --access public` (the `prepublishOnly` script rebuilds `dist/`).
+6. Publish to npm: `npm publish --access public` (the `prepublishOnly` script rebuilds `dist/`; commit the rebuilt `dist/` with the release, see below).
 7. Create the GitHub Release from the tag, using that version's changelog section as the notes:
    `gh release create X.Y.Z --title X.Y.Z --notes-file <(awk '/^## \[X.Y.Z\]/{f=1;next} /^## /{f=0} f' CHANGELOG.md)`
 8. Smoke test: in a scratch project with `"plugin": ["@postman/opencode-orbit"]`, run `opencode mcp list` and
