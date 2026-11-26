@@ -10,6 +10,12 @@ section into a dated, versioned entry when cutting a release; see [RELEASING.md]
 
 ## [Unreleased]
 
+### Fixed
+
+- OpenCode V2 failed to load the plugin (`Plugin must export a default definition with an id and an
+  effect or setup function`). Added a V2 server entry (`exports["./server"]`, `dist/server.js`) that
+  registers the `orbit` MCP server and the `orbit-discover` skill. The V1 entry is unchanged.
+
 ### Changed
 
 - Installable from GitHub without npm (`opencode plugin github:Postman-Devrel/orbit-opencode-plugin`): the
