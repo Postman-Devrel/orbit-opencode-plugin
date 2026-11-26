@@ -1,3 +1,4 @@
+import { applyOrbitConfig } from "./config.ts";
 interface McpEditor {
     get(name: string): unknown;
     set(name: string, config: {
@@ -24,6 +25,9 @@ interface Context {
 }
 declare const _default: {
     id: string;
+    server: () => Promise<{
+        config: (config: Parameters<typeof applyOrbitConfig>[0]) => Promise<void>;
+    }>;
     setup: (ctx: Context) => Promise<void>;
 };
 export default _default;

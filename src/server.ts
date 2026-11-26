@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { ORBIT_MCP_URL } from "./config.ts";
+import { applyOrbitConfig, ORBIT_MCP_URL } from "./config.ts";
 
 // OpenCode V2 server entry (resolved through `exports["./server"]`). V2 requires a default export
 // of `{ id, setup }`; the V1 entry (`./index.ts`) must keep exporting only plugin functions, so the
@@ -31,8 +31,15 @@ function readSkill(): { description?: string; content: string } {
   return { description, content: match ? match[2] : raw };
 }
 
+// One object serves both loaders: V1 reads `{ id, server }` (a plugin function returning hooks), V2
+// reads `{ id, setup }`. V1 also resolves `exports["./server"]`, so a bare `{ id, setup }` breaks V1.
 export default {
   id: "postman.orbit",
+  server: async () => ({
+    config: async (config: Parameters<typeof applyOrbitConfig>[0]) => {
+      applyOrbitConfig(config);
+    },
+  }),
   setup: async (ctx: Context) => {
     await ctx.mcp.transform((mcp) => {
       if (!mcp.get("orbit")) mcp.set("orbit", { type: "remote", url: ORBIT_MCP_URL });
